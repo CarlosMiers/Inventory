@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedido_vemay" printOrder="Horizontal" pageWidth="651" pageHeight="572" columnWidth="651" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="15724193-b574-49f8-865b-f4df501516b8">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="202"/>
+	<parameter name="cNombreEmpresa" class="java.lang.String"/>
+	<parameter name="cReferencia" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT transferencias.numero,transferencias.fecha,
+transferencias.fechaentrega,transferencias.cliente,clientes.nombre,clientes.ruc,
+clientes.direccion AS direccion,
+transferencias.observacion,
+detalle_transferencias.producto,detalle_transferencias.cantidad,
+productos.nombre AS nombreproducto,
+CASE DAYOFWEEK(fechaentrega)
+WHEN 1 THEN 'DOMINGO'
+WHEN 2 THEN 'LUNES'
+WHEN 3 THEN 'MARTES'
+WHEN 4 THEN 'MIERCOLES'
+WHEN 5 THEN 'JUEVES'
+WHEN 6 THEN 'VIERNES'
+WHEN 7 THEN 'SÁBADO'
+END nombre_dia
+FROM transferencias
+LEFT JOIN clientes
+ON clientes.codigo=transferencias.cliente
+LEFT JOIN sucursales
+ON transferencias.origen=sucursales.codigo
+LEFT JOIN detalle_transferencias
+ON detalle_transferencias.dreferencia=transferencias.idtransferencia
+LEFT JOIN productos
+ON productos.codigo=detalle_transferencias.producto
+WHERE transferencias.numero=$P{cReferencia}]]>
+	</queryString>
+	<field name="numero" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaentrega" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ruc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="producto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreproducto" class="java.lang.String"/>
+	<field name="nombre_dia" class="java.lang.String"/>
+	<pageHeader>
+		<band height="264" splitType="Stretch">
+			<textField>
+				<reportElement x="134" y="159" width="346" height="13" uuid="b8946176-5ab3-4c7a-8266-f2e4a2204dcb"/>
+				<textElement>
+					<font fontName="Lucida Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="145" y="190" width="61" height="13" uuid="0dbbd44f-20db-4dd2-b54e-bef14548a86f"/>
+				<textElement>
+					<font fontName="Lucida Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="502" y="191" width="80" height="13" uuid="b4604e73-8ae9-4d10-990d-8a13837bfc93"/>
+				<textElement>
+					<font fontName="Lucida Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaentrega}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="174" width="346" height="13" uuid="0743f59b-3a1b-4815-a321-43bdf2049983"/>
+				<textElement>
+					<font fontName="Lucida Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="416" y="191" width="80" height="13" uuid="92bface0-b027-4179-ae82-951a13fc244f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Lucida Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_dia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="19">
+			<textField pattern="###0">
+				<reportElement x="20" y="5" width="47" height="12" uuid="63b0a4b0-7ebc-4425-9d9d-3a3d904513be"/>
+				<textElement textAlignment="Right">
+					<font fontName="Lucida Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="5" width="371" height="12" uuid="c6b1b1aa-1df4-41a9-ac5a-3c1f292a7cc0"/>
+				<textElement>
+					<font fontName="Lucida Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreproducto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="140"/>
+	</pageFooter>
+</jasperReport>
